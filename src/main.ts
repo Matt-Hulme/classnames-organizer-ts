@@ -1,20 +1,15 @@
-const { mockData } = require("./mockData.ts");
-const {
-  sortClassNames: sortClassNamesFunction,
-} = require("./sortClassNames.ts");
+import ReactDOMServer from 'react-dom/server';
+import { JsxMock } from './mocks';
+import { parseClassNames } from './utils/'
+import React from 'react';
 
-interface MockItem {
-  id: number;
-  classNames: string;
-}
+// Create a ReactElement from TypedJsxMock
+const mockComponent = React.createElement(JsxMock);
 
-const sortedData = () => {
-  return mockData.map((mockItem: MockItem) => {
-    return sortClassNamesFunction(mockItem.classNames);
-  });
-};
+// Convert MockComponent to string
+const mockComponentString = ReactDOMServer.renderToStaticMarkup(mockComponent);
 
-const sortedClassNames = sortedData();
+// Pass the stringified MockComponent to parseClassNames
+const parsedClassNames = parseClassNames(mockComponentString);
 
-console.log("mockData:", mockData);
-console.log("Sorted Data:", sortedClassNames);
+console.log("Parsed Class Names:", parsedClassNames);
