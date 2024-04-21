@@ -1,4 +1,4 @@
-const sortClassNames = (classNamesString: string): string => {
+export const sortClassNames = (classNamesString: string): string => {
   const classNamesArray: string[] = classNamesString.split(" ");
   const standardClassNames: string[] = [];
   const mdClassNames: string[] = [];
@@ -36,4 +36,3 @@ const sortClassNames = (classNamesString: string): string => {
   return sortedClassNames;
 };
 
-module.exports = { sortClassNames };

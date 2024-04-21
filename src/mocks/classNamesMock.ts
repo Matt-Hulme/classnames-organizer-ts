@@ -1,4 +1,4 @@
-exports.mockData = [
+export const classNamesMock = [
   {
     id: 1,
     classNames:
