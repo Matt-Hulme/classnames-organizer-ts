@@ -13,12 +13,12 @@ export const parseClassNames = (jsxCode: string): string => {
 
   traverse(ast, {
     JSXOpeningElement(path) {
-      const classNameAttribute = path.node.attributes.find(
-        (attribute): attribute is JSXAttribute => attribute.type === 'JSXAttribute' && attribute.name.name === 'className'
+      const classAttribute = path.node.attributes.find(
+        (attribute): attribute is JSXAttribute => attribute.type === 'JSXAttribute' && attribute.name.name === 'class'
       );
 
-      if (classNameAttribute && classNameAttribute.value && classNameAttribute.value.type === 'StringLiteral') {
-        classNamesString += ' ' + classNameAttribute.value.value;
+      if (classAttribute && classAttribute.value && classAttribute.value.type === 'StringLiteral') {
+        classNamesString += ' ' + classAttribute.value.value;
       }
     },
   });
