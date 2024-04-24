@@ -27,7 +27,6 @@
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "yarn run compile-tests && yarn run compile && yarn run lint",
-    "lint": "eslint src --ext ts",
     "test": "vscode-test"
   },
   "devDependencies": {
@@ -38,11 +37,9 @@
     "@types/node": "18.x",
     "@types/react-dom": "^18.2.25",
     "@types/vscode": "^1.88.0",
-    "@typescript-eslint/eslint-plugin": "^7.4.0",
-    "@typescript-eslint/parser": "^7.4.0",
     "@vscode/test-cli": "^0.0.8",
     "@vscode/test-electron": "^2.3.9",
-    "eslint": "^8.57.0",
+    "globals": "^15.0.0",
     "ts-loader": "^9.5.1",
     "typescript": "^5.4.5",
     "webpack": "^5.91.0",
@@ -53,6 +50,7 @@
     "@babel/parser": "^7.24.4",
     "@babel/types": "^7.24.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-element-to-jsx-string": "^15.0.0"
   }
 }
