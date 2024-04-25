@@ -14,8 +14,15 @@
   "contributes": {
     "commands": [
       {
-        "command": "classnames-organizer.helloWorld",
-        "title": "Hello World"
+        "command": "extension.sortClassNames",
+        "title": "Sort Class Names"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "extension.sortClassNames",
+        "key": "f5",
+        "when": "editorTextFocus"
       }
     ]
   },
