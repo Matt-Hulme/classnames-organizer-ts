@@ -7,13 +7,8 @@ import { ReactElement } from 'react';
 import reactElementToJSXString from 'react-element-to-jsx-string';
 
 export const parseClassNames = (jsxElement: ReactElement): string => {
-  // Convert the ReactElement to a string of JSX code
   const jsxCode = reactElementToJSXString(jsxElement);
-
-  const ast = parser.parse(jsxCode, {
-    sourceType: 'module',
-    plugins: ['jsx'],
-  });
+  const ast = parser.parse(jsxCode, { sourceType: 'module', plugins: ['jsx'] });
 
   traverse(ast, {
     JSXOpeningElement(path) {
@@ -23,26 +18,24 @@ export const parseClassNames = (jsxElement: ReactElement): string => {
 
       if (classAttribute && classAttribute.value) {
         let classNames: string | null = null;
+        let valueNode: StringLiteral | null = null;
 
         if (classAttribute.value.type === 'StringLiteral') {
           classNames = classAttribute.value.value;
+          valueNode = classAttribute.value;
         } else if (classAttribute.value.type === 'JSXExpressionContainer' && classAttribute.value.expression.type === 'StringLiteral') {
           classNames = (classAttribute.value.expression as StringLiteral).value;
+          valueNode = classAttribute.value.expression as StringLiteral;
         }
 
-        if (classNames) {
+        if (classNames && valueNode) {
           const sortedClassNames = sortClassNames(classNames);
-          if (classAttribute.value.type === 'StringLiteral') {
-            classAttribute.value.value = sortedClassNames;
-          } else if (classAttribute.value.type === 'JSXExpressionContainer' && classAttribute.value.expression.type === 'StringLiteral') {
-            (classAttribute.value.expression as StringLiteral).value = sortedClassNames;
-          }
+          valueNode.value = sortedClassNames;
         }
       }
     },
   });
 
   const { code } = generate(ast);
-
   return code;
 };

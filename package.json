@@ -1,4 +1,7 @@
 {
+  "activationEvents": [
+    "onCommand:extension.sortClassNames"
+],
   "name": "classnames-organizer",
   "displayName": "classnames organizer",
   "description": "organize your classnames.",
@@ -9,7 +12,6 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [

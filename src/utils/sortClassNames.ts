@@ -21,9 +21,9 @@ export const sortClassNames = (classNamesString: string): string => {
 
   const sortedClassNamesArray: string[] = [
     ...standardClassNames,
-    ...pseudoClassNames,
-    ...lgClassNames,
     ...mdClassNames,
+    ...lgClassNames,
+    ...pseudoClassNames,
   ];
 
   const sortedClassNames: string = sortedClassNamesArray.join(" ");
