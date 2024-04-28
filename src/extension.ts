@@ -1,13 +1,12 @@
-import * as parser from '@babel/parser';
-import generate from '@babel/generator';
-import { parseClassNames } from './utils/';
 import * as vscode from 'vscode';
+import { parseClassNames } from './utils';
 
 export function activate(context: vscode.ExtensionContext) {
-    let disposable = vscode.commands.registerCommand('extension.parseClassNames', () => {
+    let disposable = vscode.commands.registerCommand('extension.sortClassNames', () => {
         // Get the active editor
         let editor = vscode.window.activeTextEditor;
         if (!editor) {
+            console.log('No active text editor');
             return; // No open text editor
         }
 
@@ -17,16 +16,17 @@ export function activate(context: vscode.ExtensionContext) {
         // Get the text content of the document
         let textContent = document.getText();
 
-        // Parse the text content into an AST
-        let ast = parser.parse(textContent, { sourceType: 'module', plugins: ['jsx'] });
-
-        // Generate code from the AST
-        let { code } = generate(ast);
-
-        // Pass the JSX code to parseClassNames
-        const parsedClassNames = parseClassNames(code);
+        // Call parseClassNames
+        const sortedCode = parseClassNames(textContent);
         
-        console.log("\nParsed Class Names:", parsedClassNames);
+        // Replace the original code with the sorted code
+        editor.edit(editBuilder => {
+            let fullRange = new vscode.Range(
+                document.positionAt(0),
+                document.positionAt(textContent.length)
+            );
+            editBuilder.replace(fullRange, sortedCode);
+        });
     });
 
     context.subscriptions.push(disposable);
