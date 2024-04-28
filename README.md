@@ -1,6 +1,6 @@
 # Classnames Organizer
 
-This is a Visual Studio Code extension that helps you organize your classnames.
+This is a Visual Studio Code extension that helps you organize your classnames alphabetically.
 
 ## Features
 
@@ -11,7 +11,3 @@ This is a Visual Studio Code extension that helps you organize your classnames.
 1. Install the extension in VS Code.
 2. Open a file with class names that you want to sort.
 3. Run the `Sort Class Names` command or press `F5`.
-
-## Contributing
-
-If you have any suggestions or issues, please open an issue on GitHub.
