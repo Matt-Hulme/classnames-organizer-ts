@@ -1,11 +1,10 @@
-import * as vscode from 'vscode';
+import * as parser from '@babel/parser';
+import generate from '@babel/generator';
 import { parseClassNames } from './utils/';
-// Import any other modules you need from main.ts
+import * as vscode from 'vscode';
 
 export function activate(context: vscode.ExtensionContext) {
     let disposable = vscode.commands.registerCommand('extension.parseClassNames', () => {
-        // The code you place here will be executed every time your command is executed
-
         // Get the active editor
         let editor = vscode.window.activeTextEditor;
         if (!editor) {
@@ -15,14 +14,20 @@ export function activate(context: vscode.ExtensionContext) {
         // Get the document
         let document = editor.document;
 
-        // Use your parseClassNames function here
-        // For example, you might get the text of the document with document.getText(),
-        // and then pass that text to your parseClassNames function
+        // Get the text content of the document
+        let textContent = document.getText();
 
-        // Add the code from main.ts here
+        // Parse the text content into an AST
+        let ast = parser.parse(textContent, { sourceType: 'module', plugins: ['jsx'] });
+
+        // Generate code from the AST
+        let { code } = generate(ast);
+
+        // Pass the JSX code to parseClassNames
+        const parsedClassNames = parseClassNames(code);
+        
+        console.log("\nParsed Class Names:", parsedClassNames);
     });
 
     context.subscriptions.push(disposable);
 }
-
-export function deactivate() {}

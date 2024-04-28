@@ -3,11 +3,8 @@ import traverse from '@babel/traverse';
 import { JSXAttribute, JSXExpressionContainer, StringLiteral } from '@babel/types';
 import { sortClassNames } from './sortClassNames';
 import generate from '@babel/generator';
-import { ReactElement } from 'react';
-import reactElementToJSXString from 'react-element-to-jsx-string';
 
-export const parseClassNames = (jsxElement: ReactElement): string => {
-  const jsxCode = reactElementToJSXString(jsxElement);
+export const parseClassNames = (jsxCode: string): string => {
   const ast = parser.parse(jsxCode, { sourceType: 'module', plugins: ['jsx'] });
 
   traverse(ast, {
