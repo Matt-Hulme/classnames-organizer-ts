@@ -9,8 +9,8 @@ export const parseClassNames = (tsxCode: string): string => {
   traverse(ast, {
     // Handle string literals
     StringLiteral(path) {
-      // Skip nodes that are part of an import declaration
-      if (path.findParent((path) => path.isImportDeclaration())) {
+      // Skip nodes that are not part of a className attribute
+      if (!path.findParent((path) => path.isJSXAttribute() && path.node.name.name === 'className')) {
         return;
       }
 
@@ -32,7 +32,20 @@ export const parseClassNames = (tsxCode: string): string => {
     },
     // Handle template literals in JSX expressions
     JSXExpressionContainer(path) {
-      if (path.node.expression.type === 'TemplateLiteral') {
+      if (path.node.expression.type === 'ConditionalExpression') {
+        // Handle ternary expressions
+        ['consequent', 'alternate'].forEach((branch) => {
+          if (path.node.expression[branch].type === 'TemplateLiteral') {
+            path.node.expression[branch].quasis.forEach(quasi => {
+              const classNames = quasi.value.raw;
+              const sortedClassNames = sortClassNames(classNames);
+              quasi.value.raw = sortedClassNames;
+              quasi.value.cooked = sortedClassNames;
+            });
+          }
+        });
+      } else if (path.node.expression.type === 'TemplateLiteral') {
+        // Handle other template literals
         path.node.expression.quasis.forEach(quasi => {
           const classNames = quasi.value.raw;
           const sortedClassNames = sortClassNames(classNames);
