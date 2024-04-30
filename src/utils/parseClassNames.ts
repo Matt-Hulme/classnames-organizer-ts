@@ -3,8 +3,8 @@ import traverse from '@babel/traverse';
 import generate from '@babel/generator';
 import { sortClassNames } from './sortClassNames';
 
-export const parseClassNames = (jsxCode: string): string => {
-  const ast = parser.parse(jsxCode, { sourceType: 'module', plugins: ['jsx', 'importMeta', 'dynamicImport'] });
+export const parseClassNames = (tsxCode: string): string => {
+  const ast = parser.parse(tsxCode, { sourceType: 'module', plugins: ['jsx', 'typescript', 'importMeta', 'dynamicImport'] });
 
   traverse(ast, {
     StringLiteral(path) {
@@ -14,6 +14,6 @@ export const parseClassNames = (jsxCode: string): string => {
     },
   });
 
-  const { code } = generate(ast);
+  const { code } = generate(ast, { minified: true });
   return code;
 };
