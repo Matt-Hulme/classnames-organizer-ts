@@ -2,8 +2,9 @@ import * as parser from '@babel/parser';
 import traverse from '@babel/traverse';
 import generate from '@babel/generator';
 import { sortClassNames } from './sortClassNames';
+import prettier from 'prettier';
 
-export const parseClassNames = (jsxCode: string): string => {
+export const parseClassNames = async (jsxCode: string): Promise<string> => {
   const ast = parser.parse(jsxCode, { sourceType: 'module', plugins: ['jsx', 'typescript', 'importMeta', 'dynamicImport'] });
 
   traverse(ast, {
@@ -51,6 +52,6 @@ export const parseClassNames = (jsxCode: string): string => {
   });
 
   const { code } = generate(ast);
-  const codeWithoutSemicolons = code.replace(/;/g, '');
-  return codeWithoutSemicolons;
+  const formattedCode = prettier.format(code, { semi: false, parser: 'babel' });
+  return formattedCode;
 };
