@@ -4,7 +4,7 @@ import generate from '@babel/generator';
 import { sortClassNames } from './sortClassNames';
 
 export const parseClassNames = (jsxCode: string): string => {
-  const ast = parser.parse(jsxCode, { sourceType: 'module', plugins: ['jsx'] });
+  const ast = parser.parse(jsxCode, { sourceType: 'module', plugins: ['jsx', 'importMeta', 'dynamicImport'] });
 
   traverse(ast, {
     StringLiteral(path) {
