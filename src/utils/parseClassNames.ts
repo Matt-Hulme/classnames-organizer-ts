@@ -1,11 +1,11 @@
-import * as parser from '@babel/parser';
+import { parse } from '@typescript-eslint/parser';
 import traverse from '@babel/traverse';
 import generate from '@babel/generator';
 import { sortClassNames } from './sortClassNames';
 import prettier from 'prettier';
 
 export const parseClassNames = async (jsxCode: string): Promise<string> => {
-  const ast = parser.parse(jsxCode, { sourceType: 'module', plugins: ['jsx', 'typescript', 'importMeta', 'dynamicImport'] });
+  const ast = parse(jsxCode, { jsx: true, useJSXTextNode: true });
 
   traverse(ast, {
     JSXAttribute(path) {
