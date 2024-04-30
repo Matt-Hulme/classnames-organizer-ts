@@ -25,19 +25,16 @@ export const parseClassNames = (tsxCode: string): string => {
         });
       }
     },
-    // Handle ternaries
-    ConditionalExpression(path) {
-      ['consequent', 'alternate'].forEach(key => {
-        const branch = path.node[key];
-        if (branch.type === 'TemplateLiteral') {
-          branch.quasis.forEach(quasi => {
-            const classNames = quasi.value.raw;
-            const sortedClassNames = sortClassNames(classNames);
-            quasi.value.raw = sortedClassNames;
-            quasi.value.cooked = sortedClassNames;
-          });
-        }
-      });
+    // Handle template literals in JSX expressions
+    JSXExpressionContainer(path) {
+      if (path.node.expression.type === 'TemplateLiteral') {
+        path.node.expression.quasis.forEach(quasi => {
+          const classNames = quasi.value.raw;
+          const sortedClassNames = sortClassNames(classNames);
+          quasi.value.raw = sortedClassNames;
+          quasi.value.cooked = sortedClassNames;
+        });
+      }
     },
   });
 
