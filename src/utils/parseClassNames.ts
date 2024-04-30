@@ -5,7 +5,12 @@ import { sortClassNames } from './sortClassNames';
 import prettier from 'prettier';
 
 export const parseClassNames = async (jsxCode: string): Promise<string> => {
-  const ast = parse(jsxCode, { jsx: true, useJSXTextNode: true });
+  const ast = parse(jsxCode, {
+    sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true,
+    },
+  });
 
   traverse(ast, {
     JSXAttribute(path) {
