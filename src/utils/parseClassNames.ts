@@ -7,10 +7,46 @@ export const parseClassNames = (jsxCode: string): string => {
   const ast = parser.parse(jsxCode, { sourceType: 'module', plugins: ['jsx', 'typescript', 'importMeta', 'dynamicImport'] });
 
   traverse(ast, {
-    StringLiteral(path) {
-      const classNames = path.node.value;
-      const sortedClassNames = sortClassNames(classNames);
-      path.node.value = sortedClassNames;
+    JSXAttribute(path) {
+      if (path.node.name.name !== 'className') {
+        return;
+      }
+
+      if (path.node.value && path.node.value.type === 'StringLiteral') {
+        const classNames = path.node.value.value;
+        const sortedClassNames = sortClassNames(classNames);
+        path.node.value.value = sortedClassNames;
+      }
+
+      if (path.node.value && path.node.value.type === 'JSXExpressionContainer') {
+        const { expression } = path.node.value;
+
+        if (expression.type === 'ConditionalExpression') {
+          // Handle ternary expressions
+          if (expression.consequent.type === 'StringLiteral') {
+            const classNames = expression.consequent.value;
+            const sortedClassNames = sortClassNames(classNames);
+            expression.consequent.value = sortedClassNames;
+          }
+
+          if (expression.alternate.type === 'StringLiteral') {
+            const classNames = expression.alternate.value;
+            const sortedClassNames = sortClassNames(classNames);
+            expression.alternate.value = sortedClassNames;
+          }
+        }
+
+        if (expression.type === 'CallExpression' && expression.callee.type === 'Identifier' && expression.callee.name === 'classnames') {
+          // Handle 'classnames' package
+          expression.arguments.forEach(arg => {
+            if (arg.type === 'StringLiteral') {
+              const classNames = arg.value;
+              const sortedClassNames = sortClassNames(classNames);
+              arg.value = sortedClassNames;
+            }
+          });
+        }
+      }
     },
   });
 
