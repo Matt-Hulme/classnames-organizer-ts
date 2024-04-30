@@ -51,5 +51,6 @@ export const parseClassNames = (jsxCode: string): string => {
   });
 
   const { code } = generate(ast);
-  return code;
+  const codeWithoutSemicolons = code.replace(/;/g, '');
+  return codeWithoutSemicolons;
 };
