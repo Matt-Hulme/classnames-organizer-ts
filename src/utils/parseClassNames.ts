@@ -20,7 +20,7 @@ export const parseClassNames = (tsxCode: string): string => {
     },
     // Handle classNames package usage
     CallExpression(path) {
-      if (path.node.callee.name === 'classNames') {
+      if (path.node.callee.type === 'Identifier' && path.node.callee.name === 'classNames') {
         path.node.arguments.forEach(arg => {
           if (arg.type === 'StringLiteral') {
             const classNames = arg.value;
@@ -56,6 +56,6 @@ export const parseClassNames = (tsxCode: string): string => {
     },
   });
 
-  const { code } = generate(ast, { minified: true });
+  const { code } = generate(ast, { minified: true, retainLines: true});
   return code;
 };
