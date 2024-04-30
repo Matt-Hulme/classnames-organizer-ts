@@ -9,6 +9,11 @@ export const parseClassNames = (tsxCode: string): string => {
   traverse(ast, {
     // Handle string literals
     StringLiteral(path) {
+      // Skip nodes that are part of an import declaration
+      if (path.findParent((path) => path.isImportDeclaration())) {
+        return;
+      }
+
       const classNames = path.node.value;
       const sortedClassNames = sortClassNames(classNames);
       path.node.value = sortedClassNames;
