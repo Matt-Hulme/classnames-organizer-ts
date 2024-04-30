@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { parseClassNames } from './utils';
 
 export function activate(context: vscode.ExtensionContext) {
-    let disposable = vscode.commands.registerCommand('extension.sortClassNames', async () => { // Make this function async
+    let disposable = vscode.commands.registerCommand('extension.sortClassNames', () => {
         // Get the active editor
         let editor = vscode.window.activeTextEditor;
         if (!editor) {
@@ -16,8 +16,8 @@ export function activate(context: vscode.ExtensionContext) {
         // Get the text content of the document
         let textContent = document.getText();
 
-        // Call parseClassNames and await its result
-        const sortedCode = await parseClassNames(textContent);
+        // Call parseClassNames
+        const sortedCode = parseClassNames(textContent);
         
         // Replace the original code with the sorted code
         editor.edit(editBuilder => {
