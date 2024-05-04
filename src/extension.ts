@@ -3,6 +3,7 @@ import { parseClassNames } from './utils';
 
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(vscode.workspace.onWillSaveTextDocument((e) => {
+    console.log('onWillSaveTextDocument event triggered');
     if (e.document.languageId === 'typescript' || e.document.languageId === 'javascript') {
       const editor = vscode.window.activeTextEditor;
       if (editor && editor.document === e.document) {
