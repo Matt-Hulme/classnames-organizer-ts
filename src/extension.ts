@@ -15,19 +15,16 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 function sortClassNames(document: vscode.TextDocument): vscode.WorkspaceEdit | undefined {
-    const editor = vscode.window.visibleTextEditors.find(e => e.document === document);
-    if (editor) {
-        const code = editor.document.getText();
-        const sortedCode = parseClassNames(code);
-        if (sortedCode !== code) {
-            const range = new vscode.Range(
-                editor.document.positionAt(0),
-                editor.document.positionAt(code.length)
-            );
-            const edit = new vscode.WorkspaceEdit();
-            edit.replace(document.uri, range, sortedCode);
-            return edit;
-        }
-    }
-    return undefined;
+  const code = document.getText();
+  const sortedCode = parseClassNames(code);
+  if (sortedCode !== code) {
+      const range = new vscode.Range(
+          document.positionAt(0),
+          document.positionAt(code.length)
+      );
+      const edit = new vscode.WorkspaceEdit();
+      edit.replace(document.uri, range, sortedCode);
+      return edit;
+  }
+  return undefined;
 }
