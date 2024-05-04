@@ -1,7 +1,6 @@
 {
   "activationEvents": [
-    "onCommand:extension.sortClassNames",
-    "onWillSaveTextDocument"
+    "onCommand:extension.sortClassNames"
   ],
   "name": "classnames-organizer",
   "displayName": "classnames organizer",
