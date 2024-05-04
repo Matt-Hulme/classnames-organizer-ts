@@ -12,8 +12,8 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 async function sortClassNames(document: vscode.TextDocument) {
-  const editor = vscode.window.activeTextEditor;
-  if (editor && editor.document === document) {
+  const editor = vscode.window.visibleTextEditors.find(e => e.document === document);
+  if (editor) {
     const code = editor.document.getText();
     const sortedCode = parseClassNames(code);
     if (sortedCode !== code) {
