@@ -2,27 +2,22 @@ import * as vscode from 'vscode';
 import { parseClassNames } from './utils';
 
 export function activate(context: vscode.ExtensionContext) {
-    let disposable = vscode.commands.registerCommand('extension.sortClassNames', () => {
-        let editor = vscode.window.activeTextEditor;
-        if (!editor) {
-            console.log('No active text editor');
-            return; 
+  context.subscriptions.push(vscode.workspace.onWillSaveTextDocument((e) => {
+    if (e.document.languageId === 'typescript' || e.document.languageId === 'javascript') {
+      const editor = vscode.window.activeTextEditor;
+      if (editor && editor.document === e.document) {
+        const code = editor.document.getText();
+        const sortedCode = parseClassNames(code);
+        if (sortedCode !== code) {
+          e.waitUntil(Promise.resolve([vscode.TextEdit.replace(
+            new vscode.Range(
+              editor.document.positionAt(0),
+              editor.document.positionAt(code.length)
+            ),
+            sortedCode
+          )]));
         }
-
-        let document = editor.document;
-
-        let textContent = document.getText();
-
-        const sortedCode = parseClassNames(textContent);
-        
-        editor.edit(editBuilder => {
-            let fullRange = new vscode.Range(
-                document.positionAt(0),
-                document.positionAt(textContent.length)
-            );
-            editBuilder.replace(fullRange, sortedCode);
-        });
-    });
-
-    context.subscriptions.push(disposable);
+      }
+    }
+  }));
 }
