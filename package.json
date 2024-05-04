@@ -1,7 +1,7 @@
 {
   "activationEvents": [
-    "onCommand:extension.sortClassNames"
-  ],
+    "*"
+],
   "name": "classnames-organizer",
   "displayName": "classnames organizer",
   "description": "sort your classnames.",
