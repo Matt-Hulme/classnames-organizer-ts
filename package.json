@@ -19,6 +19,14 @@
         "command": "extension.sortClassNames",
         "title": "Sort Class Names"
       }
+    ],
+    "keybindings": [
+      {
+        "command": "extension.sortClassNames",
+        "key": "ctrl+s",
+        "mac": "cmd+s",
+        "when": "editorTextFocus"
+      }
     ]
   },
   "scripts": {
